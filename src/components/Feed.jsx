@@ -5,59 +5,64 @@ const Feed = () => {
   
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [reachedEnd, setReachedEnd] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
 
   // Função para obter as imagens
   const fetchImages = async () => {
 
     try {
     
-        setIsLoading(true);
+        // setIsLoading(true);
+        setIsFetching(true);
 
         const response = await fetch('https://source.unsplash.com/random');
-        const imageUrl = await response.url;
+        console.log("Requisição feita")
+        const imageUrl = response.url;
 
         setImages(prevImages => [...prevImages, { url: imageUrl }]);
-        setIsLoading(false);
+        // await new Promise(resolve => setTimeout(resolve, 2000));
     
     } catch (error) {
-        console.error("Erro ao carregar as imagens", error);
-        setIsLoading(false);
+        console.log("Erro ao carregar as imagens", error);
+    
+    } finally {
+      // setIsLoading(false);
+      setIsFetching(false);
     }
   };
 
-// Efeito para carregar mais imagens quando o usuário rolar até o final da página
+  const handleScroll = () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    // Verifica se o usuário está próximo ao final da página (aqui definido como 100 pixels)
+    if (scrollHeight - scrollTop - clientHeight < 100 && !isLoading && !isFetching) {
+      setIsLoading(true);
+    }
+  };
+
+  // Efeito para carregar mais imagens quando o usuário rolar até o final da página
   useEffect(() => {
     
     // Carregando as imagens iniciais
     fetchImages();
-    
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight &&
-        !isLoading &&
-        !reachedEnd
-      ) {
-        // Evita chamar a função novamente se já atingiu o final
-        setReachedEnd(true);
-        fetchImages();
-      }
-    };
 
     window.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isLoading, reachedEnd]);
+  }, []);
 
-   
-  // Efeito para redefinir o estado reachedEnd quando novas imagens são carregadas
-   useEffect(() => {
-    if (isLoading) {
-      setReachedEnd(false);
+
+
+  useEffect(() => {
+    // Quando o carregamento estiver completo, resetamos o estado isLoading
+    if (isLoading && !isFetching) {
+      fetchImages();
+      setIsLoading(false);
     }
-  }, [isLoading]);
+  }, [isLoading, isFetching]);
+
 
   return (
     <div>
