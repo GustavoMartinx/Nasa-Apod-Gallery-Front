@@ -4,12 +4,17 @@
   --primary: #efb6b2;
   --secondary: #4e4e4e;
   --error: #ff4a4a;
+  
+  /* dark mode */
+  --background: #171719;
+  --text: #e1e1e6;
 }
 
 /* base styles & title */
 body{
   font-family: "Noto Serif";
-  color: var(--secondary);
+  color: var(--text);
+  background-color: var(--background);
 }
 .App{
   max-width: 960px;
@@ -30,7 +35,7 @@ body{
   font-size: 2.6rem;
 }
 
-/* upload form styles */
+/* upload form */
 form{
   margin: 30px auto 10px;
   text-align: center;
@@ -65,10 +70,42 @@ label:hover{
   color: var(--error);
 }
 
-/* progress bar styles */
+/* progress bar */
+.progress-bar{
+  height: 5px;
+  background: var(--primary);
+  margin-top: 20px;
+}
 
+/* image grid */
+.feed{
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 7px; /* 40px */
+}
+.img-wrap{
+  overflow: hidden;
+  height: 0;
+  margin: 0; /* 10px 0; */
+  padding: 50% 0;
+  position: relative;
+}
+.img-wrap img{
+  min-width: 100%;
+  min-height: 100%;
+  max-width: 150%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
 
-/* image grid styles */
+  transition: scale 350ms ease, opacity 350ms linear;
+}
 
+.feed:has(img:hover) img:not(:hover) {
+  scale: 0.9;
+  opacity: 0.7;
+}
 
-/* modal styles */
+/* modal */
