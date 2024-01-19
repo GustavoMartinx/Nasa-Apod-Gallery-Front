@@ -9,15 +9,18 @@ const Feed = () => {
   const observerRef = useRef(null);
 
   // Função para obter as imagens através da API
-  const fetchImages = async () => {
+  const fetch3Images = async () => {
     try {
       setIsLoading(true);
 
-      const response = await axios.get('https://source.unsplash.com/random', { responseType: 'arraybuffer' });
-      // console.log("Requisição feita com sucesso");
+      // Realiza 3 requisições para obter 3 imagens
+      for (let i = 0; i < 3; i++) {
+        const response = await axios.get('https://source.unsplash.com/random', { responseType: 'arraybuffer' });
+        // console.log("Requisição feita com sucesso");
 
-      const imageUrl = response.request.responseURL;
-      setImages(prevImages => [...prevImages, { url: imageUrl }]);
+        const imageUrl = response.request.responseURL;
+        setImages(prevImages => [...prevImages, { url: imageUrl }]);
+      }
 
     } catch (error) {
       console.error("Erro ao carregar as imagens", error);
@@ -28,14 +31,14 @@ const Feed = () => {
 
   // Carrega as imagens iniciais
   useEffect(() => {
-    fetchImages();
+    fetch3Images();
   }, []);
 
   // Detecta quando o elemento alvo entra na viewport para realizar a requisição
   const handleIntersection = (entries) => {
     const [entry] = entries;
     if (entry.isIntersecting && !isLoading) {
-      fetchImages();
+      fetch3Images();
     }
   };
   
@@ -81,13 +84,17 @@ const Feed = () => {
 
 
   return (
-    <div>
-      <h1>Feed</h1>
+    <div className="feed">
+    
       {images.map((image, index) => (
-        <Image key={index} src={image.url} />
+        <div className='img-wrap' key={index}>
+          <Image className='img' src={image.url} />
+        </div>
       ))}
+    
       <div id="intersection-target" style={{ height: '10px', background: 'transparent' }}></div>
       {isLoading && <p>Carregando...</p>}
+    
     </div>
   );
 };
