@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from './Image';
 import axios from 'axios';
 
-const Feed = () => {
+const Feed = ({ setSelectedImg }) => {
 
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +87,8 @@ const Feed = () => {
     <div className="feed">
     
       {images.map((image, index) => (
-        <div className='img-wrap' key={index}>
+        <div className='img-wrap' key={index}
+          onClick={() => setSelectedImg(image.url)}>
           <Image className='img' src={image.url} />
         </div>
       ))}
