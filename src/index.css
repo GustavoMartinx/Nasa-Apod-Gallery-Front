@@ -129,3 +129,18 @@ label:hover{
   box-shadow: 5px 7px 9px rgba(0,0,0,0.5);
   border-radius: 0.8%;
 }
+
+/* scroll bar */
+::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+/* "polegar" da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background-color: #4d4d56;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6a6a6a;
+}
