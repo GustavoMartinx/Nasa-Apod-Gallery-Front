@@ -2,25 +2,36 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from './Image';
 import axios from 'axios';
 
-const Feed = ({ setSelectedImg }) => {
+const Feed = ({ setSelectedImg }) => { /* , setImgTitle */
 
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef(null);
 
   // Função para obter as imagens através da API
-  const fetch3Images = async () => {
+  const fetchImages = async () => {
     try {
       setIsLoading(true);
 
-      // Realiza 3 requisições para obter 3 imagens
-      for (let i = 0; i < 3; i++) {
-        const response = await axios.get('https://source.unsplash.com/random', { responseType: 'arraybuffer' });
-        // console.log("Requisição feita com sucesso");
+      const num_images = 3;
 
-        const imageUrl = response.request.responseURL;
-        setImages(prevImages => [...prevImages, { url: imageUrl }]);
-      }
+      // Realiza 3 requisições para obter 3 imagens
+      // for (let i = 0; i < 3; i++) {
+      //   const response = await axios.get('https://source.unsplash.com/random', { responseType: 'arraybuffer' });
+      //   // console.log("Requisição feita com sucesso");
+
+      //   const imageUrl = response.request.responseURL;
+      //   setImages(prevImages => [...prevImages, { url: imageUrl }]);
+      // }
+
+      const response = await axios.get(`http://localhost:8000/api_handler/?num_images=${num_images}`);
+      console.log('Número enviado com sucesso!', response);
+      
+      const imagesUrls = response.data.images_urls;
+
+      const newImages = imagesUrls.map(imageUrl => ({ url: imageUrl }));
+
+      setImages(prevImages => [...prevImages, ...newImages]);
 
     } catch (error) {
       console.error("Erro ao carregar as imagens", error);
@@ -31,14 +42,14 @@ const Feed = ({ setSelectedImg }) => {
 
   // Carrega as imagens iniciais
   useEffect(() => {
-    fetch3Images();
+    fetchImages();
   }, []);
 
   // Detecta quando o elemento alvo entra na viewport para realizar a requisição
   const handleIntersection = (entries) => {
     const [entry] = entries;
     if (entry.isIntersecting && !isLoading) {
-      fetch3Images();
+      fetchImages();
     }
   };
   
@@ -88,7 +99,8 @@ const Feed = ({ setSelectedImg }) => {
     
       {images.map((image, index) => (
         <div className='img-wrap' key={index}
-          onClick={() => setSelectedImg(image.url)}>
+          onClick={() => setSelectedImg(image.url)}
+          /* onMouseOver={() => setImgTitle(image.title)} */ >
           <Image className='img' src={image.url} />
         </div>
       ))}
