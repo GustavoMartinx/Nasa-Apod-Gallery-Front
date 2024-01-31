@@ -12,29 +12,17 @@ const Feed = ({ setSelectedImg }) => { /* , setImgTitle */
   const fetchImages = async () => {
     try {
       setIsLoading(true);
-
-      const num_images = 3;
-
-      // Realiza 3 requisições para obter 3 imagens
-      // for (let i = 0; i < 3; i++) {
-      //   const response = await axios.get('https://source.unsplash.com/random', { responseType: 'arraybuffer' });
-      //   // console.log("Requisição feita com sucesso");
-
-      //   const imageUrl = response.request.responseURL;
-      //   setImages(prevImages => [...prevImages, { url: imageUrl }]);
-      // }
-
-      const response = await axios.get(`http://localhost:8000/api_handler/?num_images=${num_images}`);
-      console.log('Número enviado com sucesso!', response);
       
-      const imagesUrls = response.data.images_urls;
+      const num_images = 3;
+      const response = await axios.get(`http://localhost:8000/api_handler/?num_images=${num_images}`);
 
-      const newImages = imagesUrls.map(imageUrl => ({ url: imageUrl }));
+      const imagesArray = response.data.images_array || [];
+      const newImages = imagesArray.map(obj => ({ url: obj.hdurl }));
 
       setImages(prevImages => [...prevImages, ...newImages]);
 
     } catch (error) {
-      console.error("Erro ao carregar as imagens", error);
+      console.error("Error fetching images: ", error);
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +94,7 @@ const Feed = ({ setSelectedImg }) => { /* , setImgTitle */
       ))}
     
       <div id="intersection-target" style={{ height: '10px', background: 'transparent' }}></div>
-      {isLoading && <p>Carregando...</p>}
+      {isLoading && <p>Loading...</p>}
     
     </div>
   );
