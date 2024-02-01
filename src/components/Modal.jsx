@@ -1,4 +1,5 @@
 import React from "react";
+import formatDate  from "./FormatDate"
 
 const Modal = ({ selectedImg, setSelectedImg }) => {
 
@@ -10,15 +11,24 @@ const Modal = ({ selectedImg, setSelectedImg }) => {
         }
     }
 
+    const formattedDate = formatDate(selectedImg.date);
+
     return (
         <div className="backdrop" onClick={handleClick}>
-            <img src={selectedImg.hdurl} alt="enlarged picture" />
+            <div className="modal-content">
+                <img src={selectedImg.hdurl} alt="enlarged picture" />
 
-            <div>
-                <p>{selectedImg.title}</p>
-                <p>{selectedImg.date}</p>
-                <p>{selectedImg.description}</p>
-                <p>{selectedImg.copyright}</p>
+                <div className="info">
+                    <p className="selected-img-title">{selectedImg.title}</p>
+                    <p className="date">{formattedDate}</p>
+                    <div className="description">{selectedImg.description}</div>
+                    {selectedImg.copyright && <p className="copyright">Copyright: {selectedImg.copyright}</p>}
+                        
+                    {/* <div className="modal-footer"> */}
+                        {/* <button>Save to my List</button>
+                        <button>Download</button>
+                    </div> */}
+                </div>
             </div>
         </div>
     )
