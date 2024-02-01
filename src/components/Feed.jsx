@@ -17,7 +17,15 @@ const Feed = ({ setSelectedImg }) => { /* , setImgTitle */
       const response = await axios.get(`http://localhost:8000/api_handler/?num_images=${num_images}`);
 
       const imagesArray = response.data.images_array || [];
-      const newImages = imagesArray.map(obj => ({ url: obj.hdurl }));
+
+      const newImages = imagesArray.map(obj => ({ 
+        title: obj.title,
+        date: obj.date,
+        url: obj.url,
+        hdurl: obj.hdurl || null,
+        description: obj.explanation,
+        copyright: obj.copyright || null
+      }));
 
       setImages(prevImages => [...prevImages, ...newImages]);
 
@@ -87,7 +95,7 @@ const Feed = ({ setSelectedImg }) => { /* , setImgTitle */
     
       {images.map((image, index) => (
         <div className='img-wrap' key={index}
-          onClick={() => setSelectedImg(image.url)}
+          onClick={() => setSelectedImg(image)}
           /* onMouseOver={() => setImgTitle(image.title)} */ >
           <Image className='img' src={image.url} />
         </div>
