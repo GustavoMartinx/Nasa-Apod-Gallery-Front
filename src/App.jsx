@@ -3,6 +3,7 @@ import Title from './components/Title.jsx';
 import UploadForm from './components/UploadForm.jsx';
 import Feed from './components/Feed.jsx';
 import Modal from './components/Modal.jsx';
+import Header from './components/Header.jsx';
 import './App.css'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   
   return (
     <div className="App">
+      <Header/>
       <Title/>
       <UploadForm/>
       <Feed setSelectedImg={setSelectedImg}/>
