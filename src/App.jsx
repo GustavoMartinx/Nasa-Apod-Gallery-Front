@@ -12,8 +12,8 @@ function App() {
   return (
     <div className="App">
       <Header/>
-      <Title/>
-      <UploadForm/>
+      {/* <Title/> */}
+      {/* <UploadForm/> */}
       <Feed setSelectedImg={setSelectedImg}/>
       {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg}/>}
     </div>
