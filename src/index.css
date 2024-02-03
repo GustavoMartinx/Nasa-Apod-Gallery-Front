@@ -1,27 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap');
 
 :root{
-  --primary: #efb6b2;
   --secondary: #4e4e4e;
-  --error: #ff4a4a;
   
-  /* dark mode */
-  --background: #171719;
-  --text: #e1e1e6;
+  /* My Nasa Dark Mode */
+  
+  --nasa-blue: #0065bd;
+  
+  /* backgrounds */
+  --60-background-dark-blue: #101824;
+  --30-background-secondary: #171719;
+  
+  
+  --10-celest-blue: #0099ff;
+  --30-deep-red: #990000;
+  --10-light-red: #ff3333;
+  
+  --error: #ff4a4a;
+  --text: #fafafa;
+  --text-secondary: #c7c7c7;
+
+
+
+  --10-orange: #ff9900;
+  --10-golden: #ffd700;
 }
 
 /* base styles & title */
 body{
   font-family: "Noto Serif";
   color: var(--text);
-  background-color: var(--background);
+  background-color: var(--30-background-secondary);
 }
 .App{
   max-width: 960px;
   margin: 0 auto;
 }
-.title h1{
-  color: var(--primary);
+.logo, .title h1{
+  color: var(--10-celest-blue);
   font-size: 1.2rem;
   letter-spacing: 2px;
   font-weight: normal;
@@ -49,17 +65,17 @@ label{
   display: block;
   width: 30px;
   height: 30px;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--10-celest-blue);
   border-radius: 50%;
   margin: 10px auto;
   line-height: 30px;
-  color: var(--primary);
+  color: var(--10-celest-blue);
   font-weight: bold;
   font-size: 24px;
 }
 label:hover{
-  background: var(--primary);
-  color: white;
+  background: var(--10-celest-blue);
+  color: var(--text);
   cursor: pointer;
 }
 .output{
@@ -73,7 +89,7 @@ label:hover{
 /* progress bar */
 .progress-bar{
   height: 5px;
-  background: var(--primary);
+  background: var(--10-celest-blue);
   margin-top: 20px;
 }
 
@@ -128,7 +144,7 @@ label:hover{
 .modal-content {
   max-width: 85%;
   max-height: 95%;
-  background: var(--background);
+  background: var(--30-background-secondary);
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -185,7 +201,6 @@ label:hover{
   width: 0.4rem;
 }
 
-/* "polegar" da barra de rolagem */
 ::-webkit-scrollbar-thumb {
   background-color: #4d4d56;
   border-radius: 10px;
@@ -193,4 +208,112 @@ label:hover{
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #6a6a6a;
+}
+
+/* header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  /* background-color: #333; */
+  color: var(--text);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+
+.account, .settings, .favorites .favorites-icon {
+  width: 2vw;
+  height: 4vh;
+  margin-left: 20px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  cursor: pointer;
+  color: var(--text);
+  border: 1px solid var(--secondary);
+  border-radius: 5px;
+  transition: color 0.3s;
+}
+
+.account:hover, .settings:hover, .favorites-icon:hover, .favorites span:hover {
+  color: var(--10-celest-blue);
+}
+
+/* mini header */
+.mini-header {
+  height: 4vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #717171;
+  margin-bottom: 15px;
+  color: var(--text-secondary);
+}
+
+/* dropdown */
+.favorites-dropdown {
+  max-height: 30vh;
+  width: 14vw;
+  padding: 15px;
+  margin-top: 5px;
+
+  overflow-y: auto;
+  display: block;
+  position: absolute;
+
+  background-color: var(--60-background-dark-blue);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 5%;
+}
+
+.favorites-dropdown::-webkit-scrollbar {
+  width: 0.35rem;
+}
+
+.favorites-dropdown::-webkit-scrollbar-thumb {
+  background-color: #56565a;
+  border-radius: 10px;
+}
+
+.favorites-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #6a6a6a;
+}
+
+.lists {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--secondary);
+}
+
+.lists span {
+  margin-top: 2%;
+  flex-grow: 1;
+  display: flex;
+  justify-self: baseline;
+  cursor: pointer;
+}
+
+.lists button {
+  padding: 8px;
+  cursor: pointer;
+  
+  color: var(--text);
+  border: none;
+  border-radius: 7px;
+  background-color: var(--60-background-dark-blue);
+  transition: background-color 0.3s;
+}
+
+.lists button:hover {
+  background-color: var(--10-celest-blue);
+  border: none;
 }
