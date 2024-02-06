@@ -22,12 +22,12 @@ const Header = () => {
       <div className="header-right">
 
         <div className="favorites">
-          <span onClick={toggleDropdown} className="favorites-icon material-symbols-outlined" role="img" title="Suas listas de imagens salvas">star</span>
+          <span onClick={toggleDropdown} className="favorites-icon material-symbols-outlined" role="img" title="Suas listas de imagens salvas">star <span className='material-symbols-outlined'>expand_more</span> </span>
           {isDropdownOpen && (
             <div className="favorites-dropdown">
               <div className="mini-header">
                 <h4>Suas Listas</h4>
-                <span className="material-symbols-outlined">close</span>
+                <span onClick={toggleDropdown} className="close material-symbols-outlined">close</span>
               </div>
               {lists.map((listName, index) => (
                 <Lists
@@ -36,7 +36,7 @@ const Header = () => {
                   onManageList={handleManageList}
                 />
               ))}
-              {/* componente para criar nova lista aqui */}
+              <div className='create-list'> <span className='create-list-icon material-symbols-outlined'>add</span> <h4>Criar lista</h4></div>
             </div>
           )}
         </div>
