@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Lists from './Lists';
 import axios from 'axios';
-import { getCookie } from '../utils';
+import { getCookie, getUserData } from '../utils';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -19,7 +19,17 @@ const Header = () => {
   const [newListName, setNewListName] = useState('');
 
   useEffect(() => {
-    getUserData();
+    async function fetchData() {
+      const userData = await getUserData();
+      if (userData) {
+        setUsername(userData.username);
+        setUserName(userData.name);
+        setUserPicture(userData.profile_picture);
+      }
+      console.log("User Data:", userData);
+    }
+
+    fetchData();
   }, [])
   
   const toggleDropdown = () => {
@@ -64,20 +74,7 @@ const Header = () => {
     console.log(`Gerenciar lista: ${listName}`);
   };
 
-  const getUserData = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/users/profile/', {
-        withCredentials: true,
-      });
-      const userData = response.data;
-      setUsername(userData.username);
-      setUserName(userData.name);
-      setUserPicture(userData.picture);
-      console.log("User Data:", userData);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+  
 
 
   return (
