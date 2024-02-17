@@ -18,12 +18,8 @@ const Header = () => {
   const [creatingList, setCreatingList] = useState(false);
   const [newListName, setNewListName] = useState('');
 
-  // let token = '';
-
   useEffect(() => {
     getUserData();
-    // token = localStorage.getItem('authToken');
-    // console.log("Token Local Storage:", token);
   }, [])
   
   const toggleDropdown = () => {
@@ -33,7 +29,7 @@ const Header = () => {
 
   const handleCreateListForm = () => {
     setCreatingList(!creatingList);
-  }
+  };
 
   const handleCreateList = () => {
 
@@ -46,7 +42,6 @@ const Header = () => {
       headers: {
         'X-CSRFToken': getCookie('csrftoken'),
         'Content-Type': 'application/json',
-        // 'Authorization': `Bearer ${token}`
       }
     })
       .then(response => {
@@ -82,9 +77,8 @@ const Header = () => {
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  }
+  };
 
-  
 
   return (
     <div className="header">
