@@ -340,6 +340,34 @@ button.google-button {
   color: var(--text)!important;
 }
 
+.create-list-form {
+  padding: 7% 0% 1% 0%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  row-gap: 0.8rem;
+}
+
+.create-list-input {
+  max-width: 57%;
+  margin-bottom: 0%;
+  
+  outline: none;
+  background-color: transparent;
+  border: 0.05rem solid var(--text-tertiary);
+  color: var(--text);
+}
+
+.create-list-button {
+  width: 28%;
+  background-color: var(--10-celest-blue);
+  color: var(--text);
+  border: none;
+  font-weight: 600;
+}
+
 /* dropdown */
 .favorites-dropdown {
   max-height: 30vh;
