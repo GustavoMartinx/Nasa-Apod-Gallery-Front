@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+// Função que formata a data para "month-short dd, yyyy"
+export function formatDate(dateString) {
+    const options = { month: 'short', day: '2-digit', year: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
+    return formattedDate;
+};
+
 // Função para obter o token de autenticação
 export async function getToken() {
     const csrftoken = getCookie('csrftoken');
@@ -40,9 +47,14 @@ export async function getUserData() {
     }
 };
 
-// Função que formata a data para "month-short dd, yyyy"
-export function formatDate(dateString) {
-    const options = { month: 'short', day: '2-digit', year: 'numeric' };
-    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
-    return formattedDate;
-};
+// Função para obter as listas de imagens salvas de um usuário
+export async function getSavedCollections() {
+    try {
+        const response = await axios.get('http://localhost:8000/saved-collections/list/', {
+            withCredentials: true,
+        });
+        return response.data.collections;
+    } catch (error) {
+        console.error("Error fetching saved collections:", error);
+    }
+}

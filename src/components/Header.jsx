@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Lists from './Lists';
 import axios from 'axios';
-import { getCookie, getUserData } from '../utils';
+import { getCookie, getUserData, getSavedCollections } from '../utils';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -13,20 +13,27 @@ const Header = () => {
   const [userName, setUserName] = useState('');
   const [userPicture, setUserPicture] = useState('');
 
-  const lists = ['Lista 1', 'Lista 2', 'Lista 3', 'Lista 4'];
+  const [lists, setLists] = useState([]);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [creatingList, setCreatingList] = useState(false);
   const [newListName, setNewListName] = useState('');
 
   useEffect(() => {
     async function fetchData() {
+      
+      // Obtendo os dados do usuário
       const userData = await getUserData();
       if (userData) {
         setUsername(userData.username);
         setUserName(userData.name);
         setUserPicture(userData.profile_picture);
       }
-      console.log("User Data:", userData);
+
+      // Obtendo as listas de imagens salvas do usuário
+      const savedCollections = await getSavedCollections();
+      if (savedCollections) {
+        setLists(savedCollections);
+      }
     }
 
     fetchData();
@@ -57,12 +64,15 @@ const Header = () => {
       .then(response => {
         console.log("Collection name sent:", data);
         console.log("response", response);
+        
+        setLists([...lists, newListName]);
         alert(`${response.data.message}`);
         setCreatingList(false);
       })
       .catch(error => {
         console.log("Collection name sent:", data);
         console.error(error);
+        alert(`Error: ${error.response.data.error}`);
         setCreatingList(false);
       });
 
