@@ -14,13 +14,16 @@ const Header = () => {
   const [userPicture, setUserPicture] = useState('');
 
   const [lists, setLists] = useState([]);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [creatingList, setCreatingList] = useState(false);
   const [newListName, setNewListName] = useState('');
+
+  const [creatingList, setCreatingList] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isManageListOpen, setManageListOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
     async function fetchData() {
-      
+
       // Obtendo os dados do usuário
       const userData = await getUserData();
       if (userData) {
@@ -38,7 +41,7 @@ const Header = () => {
 
     fetchData();
   }, [])
-  
+
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
     setCreatingList(false);
@@ -64,7 +67,7 @@ const Header = () => {
       .then(response => {
         console.log("Collection name sent:", data);
         console.log("response", response);
-        
+
         setLists([...lists, newListName]);
         alert(`${response.data.message}`);
         setCreatingList(false);
@@ -81,10 +84,10 @@ const Header = () => {
   }
 
   const handleManageList = (listName) => {
-    console.log(`Gerenciar lista: ${listName}`);
+    setManageListOpen(!isManageListOpen);
   };
 
-  
+
 
 
   return (
@@ -102,11 +105,15 @@ const Header = () => {
                 <span onClick={toggleDropdown} className="close material-symbols-outlined">close</span>
               </div>
               {lists.map((listName, index) => (
-                <Lists
-                  key={index}
-                  listName={listName}
-                  onManageList={handleManageList}
-                />
+                <>
+                  <Lists
+                    key={index}
+                    listName={listName}
+                    toggleManageList={handleManageList}
+                    setDropdownPosition={setDropdownPosition}
+                  />
+                  <div className="separator"> </div>
+                </>
               ))}
               {creatingList && (
                 <div className="create-list-form">
@@ -121,10 +128,29 @@ const Header = () => {
                 </div>
               )}
               <div
+                className='create-list'
                 onClick={handleCreateListForm}
-                className='create-list'>
+                title='Crie uma nova lista para salvar imagens'>
                 <span className='create-list-icon material-symbols-outlined'>add</span>
                 <h4>Criar lista</h4>
+              </div>
+            </div>
+          )}
+          {isManageListOpen && isDropdownOpen && (
+            <div
+              className="menu"
+              style={{ top: dropdownPosition.top, left: dropdownPosition.left }}>
+
+              <div className="menu-button">
+                <span className="material-symbols-outlined">edit</span>
+                Editar
+              </div>
+
+              <div className="separator"> </div>
+
+              <div className="menu-button delete">
+                <span className="material-symbols-outlined">delete</span>
+                Excluir
               </div>
             </div>
           )}

@@ -296,7 +296,7 @@ button.google-button {
   width: 3.2vw;
 }
 
-.account:hover, .settings:hover, .favorites-icon:hover, .favorites span:hover {
+.account:hover, .settings:hover, .favorites-icon:hover {
   color: var(--10-celest-blue);
 }
 
@@ -307,7 +307,6 @@ button.google-button {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #717171;
-  margin-bottom: 15px;
 }
 
 .close, .create-list-icon {
@@ -382,7 +381,9 @@ button.google-button {
   background-color: var(--60-background-dark-blue);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1;
-  border-radius: 5%;
+  border-radius: 10px;
+  
+  border: solid 0.5px var(--10-light-gray);
 }
 
 .favorites-dropdown::-webkit-scrollbar {
@@ -399,18 +400,24 @@ button.google-button {
 }
 
 .lists {
-  padding: 10px;
+  padding: 5px 6px 5px 15px;
+  margin: 3% 0% 3% 0%;
+  
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.separator {
+  height: 1px;
   border-bottom: 1px solid var(--10-light-gray);
 }
 
 .lists span {
-  margin-top: 2%;
   flex-grow: 1;
   display: flex;
   justify-self: baseline;
-  cursor: pointer;
 }
 
 .lists button {
@@ -421,10 +428,57 @@ button.google-button {
   border: none;
   border-radius: 7px;
   background-color: var(--60-background-dark-blue);
-  transition: background-color 0.3s;
+}
+
+.lists:hover, .lists:hover button {
+  transition: background-color 0.2s;
+  background-color: var(--10-light-gray);
+  border-radius: 8px;
 }
 
 .lists button:hover {
   background-color: var(--10-celest-blue);
   border: none;
+}
+
+/* menu */
+.menu {
+  max-width: 180px;
+  width: 11vw;
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  flex-direction: column;
+  
+  background-color: var(--30-background-secondary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 5px;
+  border: solid 0.5px var(--text-tertiary);
+}
+
+.menu-button {
+  height: 2.5vh;
+  padding: 8px;
+  margin: 4%;
+  
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.5rem;
+  
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.menu-button:hover {
+  background-color: var(--text-tertiary);
+  border-radius: 6px;
+}
+
+.delete {
+  color: var(--10-light-red);
+  font-weight: 600;
 }
