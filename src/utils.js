@@ -58,3 +58,10 @@ export async function getSavedCollections() {
         console.error("Error fetching saved collections:", error);
     }
 }
+
+// Função para atualizar o nome de uma lista de imagens específica
+export const updateListName = (listName, newName, lists, setLists) => {
+    const updatedLists = [...lists];
+    updatedLists[lists.indexOf(listName)] = newName;
+    setLists(updatedLists);
+};

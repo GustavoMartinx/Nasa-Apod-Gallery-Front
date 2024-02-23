@@ -482,3 +482,16 @@ button.google-button {
   color: var(--10-light-red);
   font-weight: 600;
 }
+
+.rename-input {
+  max-width: 85%;
+  width: 85%;
+  margin-bottom: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  background-color: transparent;
+  border: 0.05rem solid var(--text-tertiary);
+  color: var(--text);
+}

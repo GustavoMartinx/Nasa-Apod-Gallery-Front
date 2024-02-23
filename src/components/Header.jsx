@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Lists from './Lists';
 import axios from 'axios';
-import { getCookie, getUserData, getSavedCollections } from '../utils';
+import { getCookie, getUserData, getSavedCollections, updateListName } from '../utils';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -17,6 +17,9 @@ const Header = () => {
   const [newListName, setNewListName] = useState('');
 
   const [creatingList, setCreatingList] = useState(false);
+  const [isRenamingList, setIsRenamingList] = useState(false);
+  const [managingListIndex, setManagingListIndex] = useState(null);
+
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isManageListOpen, setManageListOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -45,10 +48,14 @@ const Header = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
     setCreatingList(false);
+    setManageListOpen(false);
+    setIsRenamingList(false);
   };
-
+  
   const handleCreateListForm = () => {
     setCreatingList(!creatingList);
+    setManageListOpen(false);
+    setIsRenamingList(false);
   };
 
   const handleCreateList = () => {
@@ -83,9 +90,17 @@ const Header = () => {
     setNewListName('');    // Limpa o campo de texto
   }
 
-  const handleManageList = (listName) => {
+  const handleManageList = (managingListIndex) => {
     setManageListOpen(!isManageListOpen);
+    setIsRenamingList(false);
+
+    setManagingListIndex(managingListIndex);
   };
+
+  const handleRenameList = () => {
+    setIsRenamingList(true);
+    setManageListOpen(false);
+  }
 
 
 
@@ -105,15 +120,19 @@ const Header = () => {
                 <span onClick={toggleDropdown} className="close material-symbols-outlined">close</span>
               </div>
               {lists.map((listName, index) => (
-                <>
+                <div key={index}>
                   <Lists
-                    key={index}
                     listName={listName}
-                    toggleManageList={handleManageList}
+                    handleManageList={handleManageList}
                     setDropdownPosition={setDropdownPosition}
+                    
+                    managingListIndex={index}
+                    isRenamingList={isRenamingList && managingListIndex === index}
+                    setIsRenamingList={setIsRenamingList}
+                    updateListName={(newName) => updateListName(listName, newName, lists, setLists)}
                   />
                   <div className="separator"> </div>
-                </>
+                </div>
               ))}
               {creatingList && (
                 <div className="create-list-form">
@@ -141,7 +160,7 @@ const Header = () => {
               className="menu"
               style={{ top: dropdownPosition.top, left: dropdownPosition.left }}>
 
-              <div className="menu-button">
+              <div className="menu-button" onClick={handleRenameList}>
                 <span className="material-symbols-outlined">edit</span>
                 Editar
               </div>
