@@ -16,7 +16,7 @@ const Modal = ({ selectedImg, setSelectedImg }) => {
     return (
         <div className="backdrop" onClick={handleClick}>
             <div className="modal-content">
-                <img src={selectedImg.hdurl} alt="enlarged picture" />
+                <img src={selectedImg.hdurl ? selectedImg.hdurl : selectedImg.url} alt="enlarged picture" />
 
                 <div className="info">
                     <p className="selected-img-title">{selectedImg.title}</p>

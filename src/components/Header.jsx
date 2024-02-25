@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Lists from './Lists';
 import axios from 'axios';
-import { getCookie, getUserData, getSavedCollections, updateListName } from '../utils';
+import { getCookie, getUserData, getSavedCollections, updateListName, deleteSavedCollection } from '../utils';
+import ConfirmationPopup from './ConfirmationPopup';
+import Lists from './Lists';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -23,6 +24,7 @@ const Header = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isManageListOpen, setManageListOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -51,7 +53,7 @@ const Header = () => {
     setManageListOpen(false);
     setIsRenamingList(false);
   };
-  
+
   const handleCreateListForm = () => {
     setCreatingList(!creatingList);
     setManageListOpen(false);
@@ -86,8 +88,8 @@ const Header = () => {
         setCreatingList(false);
       });
 
-    setCreatingList(false); // Fecha o formulário de criação
-    setNewListName('');    // Limpa o campo de texto
+    setCreatingList(false);
+    setNewListName('');
   }
 
   const handleManageList = (managingListIndex) => {
@@ -102,6 +104,41 @@ const Header = () => {
     setManageListOpen(false);
   }
 
+
+  const handleDeleteClick = () => {
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    
+    async function deleteList() {
+      const listNameToDelete = lists[managingListIndex];
+      
+      await axios.delete(`http://localhost:8000/saved-collections/delete/${listNameToDelete}`, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => {
+        console.log(response.data.message);
+        deleteSavedCollection(lists, listNameToDelete, setLists);
+      })
+      .catch(error => {
+        console.error("Error deleting list:", error);
+        alert(`Error: ${error.response.data.error}`);
+      });
+    }
+    deleteList();
+
+    setShowDeleteConfirmation(false);
+    setManageListOpen(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirmation(false);
+  };
 
 
 
@@ -125,7 +162,7 @@ const Header = () => {
                     listName={listName}
                     handleManageList={handleManageList}
                     setDropdownPosition={setDropdownPosition}
-                    
+
                     managingListIndex={index}
                     isRenamingList={isRenamingList && managingListIndex === index}
                     setIsRenamingList={setIsRenamingList}
@@ -167,10 +204,17 @@ const Header = () => {
 
               <div className="separator"> </div>
 
-              <div className="menu-button delete">
+              <div className="menu-button delete" onClick={handleDeleteClick}>
                 <span className="material-symbols-outlined">delete</span>
                 Excluir
               </div>
+              {showDeleteConfirmation && (
+                <ConfirmationPopup
+                  message="Tem certeza que deseja deletar a lista de imagens?"
+                  onConfirm={handleConfirmDelete}
+                  onCancel={handleCancelDelete}
+                />
+              )}
             </div>
           )}
         </div>

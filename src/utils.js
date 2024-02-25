@@ -25,14 +25,14 @@ export async function getToken() {
             console.error('Error:', error);
             return null;
         });
-}
+};
 
 // Função para obter o CSRF token
 export function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-}
+};
 
 // Função para obter os dados do usuário
 export async function getUserData() {
@@ -57,11 +57,18 @@ export async function getSavedCollections() {
     } catch (error) {
         console.error("Error fetching saved collections:", error);
     }
-}
+};
 
 // Função para atualizar o nome de uma lista de imagens específica
 export const updateListName = (listName, newName, lists, setLists) => {
     const updatedLists = [...lists];
     updatedLists[lists.indexOf(listName)] = newName;
+    setLists(updatedLists);
+};
+
+// Função para atualizar a lista de saved collections após uma exclusão
+export function deleteSavedCollection(lists, listName, setLists) {
+    const updatedLists = [...lists];
+    updatedLists.splice(lists.indexOf(listName), 1);
     setLists(updatedLists);
 };

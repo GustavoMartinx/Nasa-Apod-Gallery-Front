@@ -187,6 +187,15 @@ button.google-button {
   align-items: center;
 }
 
+.popup-content {
+  width: 30%;
+  min-height: 15%;
+  padding: 15px;
+  background: var(--30-background-secondary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+
 .modal-content {
   max-width: 85%;
   max-height: 95%;
@@ -494,4 +503,39 @@ button.google-button {
   background-color: transparent;
   border: 0.05rem solid var(--text-tertiary);
   color: var(--text);
+}
+
+.popup-buttons {
+  padding: 5px 10px 5px 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: var(--text);
+  border: 1px solid var(--text-tertiary);
+}
+
+.cancel-button:hover {
+  background-color: var(--text-tertiary);
+  transition: background-color 0.3s;
+}
+
+.delete-button {
+  background-color: transparent;
+  color: var(--10-light-red);
+  border: 1px solid var(--10-light-red);
+  font-weight: 600;
+}
+
+.delete-button:hover {
+  background-color: var(--10-light-red);
+  color: var(--text);
+  font-weight: 600;
+  border: 1px solid var(--error);
+  transition: background-color 0.3s;
 }
