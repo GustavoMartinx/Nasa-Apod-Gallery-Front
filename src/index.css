@@ -539,3 +539,20 @@ button.google-button {
   border: 1px solid var(--error);
   transition: background-color 0.3s;
 }
+
+.choosing-collections {
+  min-height: 15%;
+  max-height: 30vh;
+  width: 14vw;
+  padding: 15px;
+  
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  z-index: 1;
+  gap: 0.5rem;
+
+  border-radius: 10px;
+  background: var(--30-background-secondary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}

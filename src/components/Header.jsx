@@ -8,7 +8,7 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 
-const Header = () => {
+const Header = ({ savedCollections, setSavedCollections }) => {
 
   const [username, setUsername] = useState('');
   const [userName, setUserName] = useState('');
@@ -38,9 +38,10 @@ const Header = () => {
       }
 
       // Obtendo as listas de imagens salvas do usuário
-      const savedCollections = await getSavedCollections();
-      if (savedCollections) {
-        setLists(savedCollections);
+      const userSavedCollections = await getSavedCollections();
+      if (userSavedCollections) {
+        setLists(userSavedCollections);
+        setSavedCollections(userSavedCollections);
       }
     }
 
@@ -78,6 +79,7 @@ const Header = () => {
         console.log("response", response);
 
         setLists([...lists, newListName]);
+        setSavedCollections([...lists, newListName]);
         alert(`${response.data.message}`);
         setCreatingList(false);
       })
@@ -123,7 +125,7 @@ const Header = () => {
     })
       .then(response => {
         console.log(response.data.message);
-        deleteSavedCollection(lists, listNameToDelete, setLists);
+        deleteSavedCollection(lists, listNameToDelete, setLists, setSavedCollections);
       })
       .catch(error => {
         console.error("Error deleting list:", error);
@@ -166,7 +168,7 @@ const Header = () => {
                     managingListIndex={index}
                     isRenamingList={isRenamingList && managingListIndex === index}
                     setIsRenamingList={setIsRenamingList}
-                    updateListName={(newName) => updateListName(listName, newName, lists, setLists)}
+                    updateListName={(newName) => updateListName(listName, newName, lists, setLists, setSavedCollections)}
                   />
                   <div className="separator"> </div>
                 </div>
@@ -210,7 +212,7 @@ const Header = () => {
               </div>
               {showDeleteConfirmation && (
                 <ConfirmationPopup
-                  message="Tem certeza que deseja deletar a lista de imagens?"
+                  message={`Tem certeza que deseja deletar a lista de imagens "${lists[managingListIndex]}"?`}
                   onConfirm={handleConfirmDelete}
                   onCancel={handleCancelDelete}
                 />

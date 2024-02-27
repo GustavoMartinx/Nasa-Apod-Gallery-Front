@@ -60,15 +60,17 @@ export async function getSavedCollections() {
 };
 
 // Função para atualizar o nome de uma lista de imagens específica
-export const updateListName = (listName, newName, lists, setLists) => {
+export const updateListName = (listName, newName, lists, setLists, setSavedCollections) => {
     const updatedLists = [...lists];
     updatedLists[lists.indexOf(listName)] = newName;
     setLists(updatedLists);
+    setSavedCollections(updatedLists);
 };
 
 // Função para atualizar a lista de saved collections após uma exclusão
-export function deleteSavedCollection(lists, listName, setLists) {
+export function deleteSavedCollection(lists, listName, setLists, setSavedCollections) {
     const updatedLists = [...lists];
     updatedLists.splice(lists.indexOf(listName), 1);
     setLists(updatedLists);
+    setSavedCollections(updatedLists);
 };

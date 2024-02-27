@@ -5,12 +5,19 @@ import Header from '../components/Header.jsx';
 
 function HomeFeedPage() {
   const [selectedImg, setSelectedImg] = useState(null);
+  const [savedCollections, setSavedCollections] = useState([]);
   
   return (
     <div className="HomeFeedPage">
-      <Header/>
+      <Header savedCollections={savedCollections} setSavedCollections={setSavedCollections}/>
       <Feed setSelectedImg={setSelectedImg}/>
-      {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg}/>}
+      {selectedImg &&
+        <Modal
+          selectedImg={selectedImg}
+          setSelectedImg={setSelectedImg}
+          savedCollections={savedCollections}
+        />
+      }
     </div>
   );
 }

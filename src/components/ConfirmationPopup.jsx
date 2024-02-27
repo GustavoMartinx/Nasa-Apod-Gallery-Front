@@ -2,7 +2,7 @@ import React from 'react';
 
 const ConfirmationPopup = ({ message, onConfirm, onCancel }) => {
   return (
-    <div className="popup backdrop" onClick={handleCloseConfirmationPopup}>
+    <div className="popup backdrop">
       <div className="popup-content">
         <div className="mini-header">
           <h4>Excluir Lista</h4>
