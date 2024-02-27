@@ -14,6 +14,7 @@
   --nasa-blue: #0065bd;
   --30-deep-red: #990000;
   --10-light-red: #ff3333;
+  --call-to-action: #00d5ff;
   
   /* text */
   --text: #fafafa;
@@ -254,6 +255,21 @@ button.google-button {
   font-size: 0.9rem;
   color: #888;
   font-weight: 500;
+}
+
+.modal-footer {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  font-size: 0.95rem;
+}
+
+.modal-button {
+  font-weight: 600;
+  width: 10vw;
+  height: 4.5vh;
 }
 
 /* scroll bar */
@@ -542,12 +558,11 @@ button.google-button {
 
 .choosing-collections {
   min-height: 15%;
-  max-height: 30vh;
-  width: 14vw;
-  padding: 15px;
+  max-height: 35vh;
+  min-width: 15vw;
+  padding: 20px;
   
-  overflow-y: auto;
-  overflow-x: hidden;
+  
   position: absolute;
   z-index: 1;
   gap: 0.5rem;
@@ -555,4 +570,118 @@ button.google-button {
   border-radius: 10px;
   background: var(--30-background-secondary);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.choosing-collections-list {
+  height: 25vh;
+  width: 15vw;
+  margin-top: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* .checkbox-container {
+  	
+} */
+
+.checkbox-listname {
+  padding: 5px 6px 5px 6px;
+  margin: 3% 0% 3% 0%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.checkbox-listname input {
+  width: 15px;
+  height: 15px;
+  margin-bottom: 0px;
+
+  border: 1px solid var(--text-tertiary);
+  border-radius: 10px;
+}
+
+.checkbox-listname input:hover {
+  cursor: pointer;
+}
+
+.choises-footer {
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cancel-choice {
+  color: var(--text-secondary);
+  border: none;
+  background: transparent;
+  font-weight: 600;
+}
+.cancel-choice:hover {
+  color: var(--text);
+  background-color: rgba(45,45,45,1);
+}
+
+
+/* botao bonito */
+.call-to-action {
+  position: relative;
+  background: rgba(45,45,45,1);
+  font-size: 1em;
+  transition: 0.5s;
+  /* text-transform: uppercase; */
+  overflow: hidden;
+}
+
+.call-to-action span {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.05em;
+}
+
+
+.call-to-action::before {
+  content: '';
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(var(--call-to-action), transparent, transparent);
+  width: 200px;
+  height: 200px;
+  opacity: 0;
+  transition: 0.5s, top 0s, left 0s;
+}
+
+.call-to-action:hover::before {
+  opacity: 1;
+}
+
+.call-to-action:hover {
+  color: var(--call-to-action);
+  text-shadow: 0 0 15px var(--call-to-action),
+  0 0 40px var(--call-to-action);
+}
+
+.call-to-action::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: rgba(45,45,45,0.8);
+}
+
+
+
+
+
+.save-button {
+  font-size:0.81rem;
+  font-weight: 600;
+  width: 7vw;
 }

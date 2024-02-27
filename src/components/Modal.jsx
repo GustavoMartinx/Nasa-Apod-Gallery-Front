@@ -1,4 +1,4 @@
-import { React, useState, useRef } from "react";
+import { React, useState, useEffect } from "react";
 import Lists from './Lists';
 import { formatDate } from "../utils";
 
@@ -6,9 +6,6 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
 
   const [isChoosing, setIsChoosing] = useState(false);
   const [selectedCollections, setSelectedCollections] = useState([]);
-
-  const [dropdownPosition, setDropdownPosition] = useState({ bottom: 0, right: 0 });
-  const modalRef = useRef(null);
 
   const handleClickOut = (e) => {
     // verifica se o elemento clicado tem a classe 'backdrop': se sim, fechará a img ampliada
@@ -20,15 +17,6 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
 
   const handleSaveImage = (e) => {
     setIsChoosing(!isChoosing);
-
-    const buttonRect = e.target.getBoundingClientRect();
-    const modalRect = modalRef.current.getBoundingClientRect();
-
-    const bottom = modalRect.bottom - buttonRect.bottom + buttonRect.height;
-    const right = modalRect.left;
-
-    setDropdownPosition({ bottom, right });
-
   }
 
   const toggleSelection = (listName) => {
@@ -38,19 +26,31 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
       setSelectedCollections([...selectedCollections, listName]);
     }
   };
-  
+
   const handleFinishChoice = () => {
     const selectedCollectionsToSave = savedCollections.filter(listName => selectedCollections.includes(listName));
     // console.log("selectedCollectionsToSave", selectedCollectionsToSave);
     // enviar selectedCollectionsToSave
   };
-  
+
+  useEffect(() => {
+    let button = document.querySelectorAll('.call-to-action');
+    button.forEach(button => {
+      button.onmousemove = function (e) {
+        let x = e.pageX - button.offsetLeft;
+        let y = e.pageY - button.offsetTop;
+
+        button.style.setProperty('--x', x + 'px');
+        button.style.setProperty('--y', y + 'px');
+      }
+    });
+  }, []);
 
   const formattedDate = formatDate(selectedImg.date);
 
   return (
     <div className="backdrop" onClick={handleClickOut}>
-      <div className="modal-content" ref={modalRef}>
+      <div className="modal-content">
         <img src={selectedImg.hdurl ? selectedImg.hdurl : selectedImg.url} alt="enlarged picture" />
 
         <div className="info">
@@ -60,22 +60,22 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
           {selectedImg.copyright && <p className="copyright">Copyright: {selectedImg.copyright}</p>}
 
           <div className="modal-footer">
-            <button onClick={handleSaveImage}>Salvar</button>
-            <button>Download</button>
+            <button onClick={handleSaveImage} title="Salvar esta imagem em suas listas" className="modal-button call-to-action"> <span>SALVAR</span> </button>
+            <button title="Baixar esta imagem em seu dispositivo" className="modal-button call-to-action"> <span>DOWNLOAD</span> </button>
           </div>
 
         </div>
         {isChoosing && (
-          <div
-            className="choosing-collections"
-            style={{ bottom: dropdownPosition.bottom, right: dropdownPosition.right }}>
+          <div className="backdrop">
+            <div className="choosing-collections">
             <div className="mini-header">
               <h4>Adicionar à lista</h4>
               <span onClick={() => setIsChoosing(false)} className="close material-symbols-outlined">close</span>
             </div>
+            <div className="choosing-collections-list">
             {savedCollections.map((listName, index) => (
-              <div key={index}>
-                <label>
+              <div key={index} className="checkbox-container">
+                <label className="checkbox-listname">
                   <input
                     type="checkbox"
                     checked={selectedCollections.includes(listName)}
@@ -86,7 +86,12 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
                 <div className="separator"> </div>
               </div>
             ))}
-            <button onClick={handleFinishChoice}>Concluir</button>
+            </div>
+            <div className="choises-footer">
+              <button className="cancel-choice cancel-button" onClick={() => setIsChoosing(false)}>Cancelar</button>
+              <button className="save-button call-to-action" onClick={handleFinishChoice}> <span>Salvar</span> </button>
+            </div>
+          </div>
           </div>
         )}
 
