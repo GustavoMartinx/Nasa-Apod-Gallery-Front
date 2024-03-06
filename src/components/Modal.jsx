@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import Lists from './Lists';
-import { formatDate } from "../utils";
+import { formatDate, getCookie } from "../utils";
+import axios from 'axios';
 
 const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
 
@@ -28,9 +29,28 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
   };
 
   const handleFinishChoice = () => {
+
     const selectedCollectionsToSave = savedCollections.filter(listName => selectedCollections.includes(listName));
-    // console.log("selectedCollectionsToSave", selectedCollectionsToSave);
-    // enviar selectedCollectionsToSave
+
+    const data = {
+      date: selectedImg.date,
+      collections: selectedCollectionsToSave
+    }
+
+    axios.post('http://localhost:8000/saved-collections/add-image/', data, {
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => {
+        alert(`${response.data.message}`);
+        setIsChoosing(false);
+      })
+      .catch(error => {
+        alert(`Error: ${error.response.data.error}`);
+      });
   };
 
   useEffect(() => {
@@ -68,30 +88,30 @@ const Modal = ({ selectedImg, setSelectedImg, savedCollections }) => {
         {isChoosing && (
           <div className="backdrop">
             <div className="choosing-collections">
-            <div className="mini-header">
-              <h4>Adicionar à lista</h4>
-              <span onClick={() => setIsChoosing(false)} className="close material-symbols-outlined">close</span>
-            </div>
-            <div className="choosing-collections-list">
-            {savedCollections.map((listName, index) => (
-              <div key={index} className="checkbox-container">
-                <label className="checkbox-listname">
-                  <input
-                    type="checkbox"
-                    checked={selectedCollections.includes(listName)}
-                    onChange={() => toggleSelection(listName)}
-                  />
-                  {listName}
-                </label>
-                <div className="separator"> </div>
+              <div className="mini-header">
+                <h4>Adicionar à lista</h4>
+                <span onClick={() => setIsChoosing(false)} className="close material-symbols-outlined">close</span>
               </div>
-            ))}
+              <div className="choosing-collections-list">
+                {savedCollections.map((listName, index) => (
+                  <div key={index} className="checkbox-container">
+                    <label className="checkbox-listname">
+                      <input
+                        type="checkbox"
+                        checked={selectedCollections.includes(listName)}
+                        onChange={() => toggleSelection(listName)}
+                      />
+                      {listName}
+                    </label>
+                    <div className="separator"> </div>
+                  </div>
+                ))}
+              </div>
+              <div className="choises-footer">
+                <button className="cancel-choice cancel-button" onClick={() => setIsChoosing(false)}>Cancelar</button>
+                <button className="save-button call-to-action" onClick={handleFinishChoice}> <span>Salvar</span> </button>
+              </div>
             </div>
-            <div className="choises-footer">
-              <button className="cancel-choice cancel-button" onClick={() => setIsChoosing(false)}>Cancelar</button>
-              <button className="save-button call-to-action" onClick={handleFinishChoice}> <span>Salvar</span> </button>
-            </div>
-          </div>
           </div>
         )}
 
